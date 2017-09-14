@@ -1,0 +1,24 @@
+digraph components {
+    "Route-URL";
+    Form;
+    "Hasse-Diagramm";
+    "Komplement-URL";
+    "Teilmengen-URL";
+    "Resultat-Tabelle";
+    "Route-URL" -> Form;
+    "Route-URL" -> "Komplement-URL";
+    "Route-URL" -> "Teilmengen-URL";
+    "Route-URL" -> "Resultat-Tabelle";
+    "Route-URL" -> "Hasse-Diagramm";
+    Form -> "Route-URL";
+    Form -> "Hasse-Diagramm";
+    Form -> "Resultat-Tabelle";
+    "Hasse-Diagramm" -> "Komplement-URL";
+    "Hasse-Diagramm" -> "Teilmengen-URL";
+    "Komplement-URL" -> "Route-URL";
+    "Komplement-URL" -> "Hasse-Diagramm";
+    "Komplement-URL" -> "Resultat-Tabelle";
+    "Teilmengen-URL" -> "Route-URL";
+    "Teilmengen-URL" -> "Hasse-Diagramm";
+    "Teilmengen-URL" -> "Resultat-Tabelle";
+}

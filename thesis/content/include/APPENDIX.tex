@@ -1,0 +1,387 @@
+\chapter{Anhang}\label{anhang}
+
+\section{\texorpdfstring{Anforderungen an die Arbeit:
+Interview-Fragen\label{Anhang_Interview_Fragen}}{Anforderungen an die Arbeit: Interview-Fragen}}\label{anforderungen-an-die-arbeit-interview-fragen}
+
+\textbf{allgemein}
+
+\begin{itemize}
+\item
+  Für was nutzen Sie Star-Exec-Presenter?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Betrachtung der Termination-Competition-Ergebnisse
+  \item
+    Analyse der Resultate einzelner Kategorien
+  \item
+    Sonstiges
+  \end{itemize}
+\item
+  Was ist die von Ihnen am meisten genutzte Route? (Angabe von Bsp.-URL
+  hilfreich)
+\item
+  Skizzieren Sie einen typischen Besuch der Seite bis zur gesuchten
+  Informationen.
+\item
+  Welche guten/schlechten Eigenschaften hat das query interface
+  \url{http://nfa.imn.htwk-leipzig.de/termcomp-devel/results/standard/Query%20%5BFilter_Rows%20%28And%20%5BEquals%20%22nothing%22,Equals%20%22solver-maybe%22,Equals%20%22solver-maybe%22,Equals%20%22solver-maybe%22,Equals%20%22solver-no%22,Equals%20%22solver-maybe%22,Equals%20%22solver-maybe%22%5D%29%5D/10296}
+  ?
+\item
+  Was sind die Probleme mit der derzeitigen Darstellung?
+\item
+  Welche Darstellungsformen, wuerden bei der
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Visualisierung
+  \item
+    Analyse
+  \item
+    Navigation zwischen den Seiten, den Analyse-Daten helfen?
+  \end{itemize}
+\item
+  Welche Informationen werden benötigt und sind derzeit nicht in
+  star-exec-presenter eingebaut?
+\item
+  Welche Features/Funktionen wären hilfreich, um konkurrierende Solver
+  besser zu analysieren?
+\item
+  Was sind interessante Merkmale eines Job-Pairs?
+\item
+  Gibt es Merkmale eines JobPairs, die wichtiger sind als andere? Kann
+  man eindeutige Prioritäten vergeben?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Solvername
+  \item
+    Solver-Konfiguration
+  \item
+    Solver-Resultat (YES, NO, MAYBE)
+  \item
+    CPU-Zeit
+  \item
+    Wallclock-Zeit
+  \item
+    Informationen ueber den gelösten Benchmark
+  \end{itemize}
+\end{itemize}
+
+\textbf{konkrete Ansätze}
+
+\begin{itemize}
+\item
+  Sollte es eine Navigationsleiste/Menu geben?
+\item
+  Sollten die Tabellenspalten sortierbar sein?
+\item
+  Sollte es einen Filter fuer die Job-Tabelle geben?
+\item
+  Sollte es eine Suche fuer Job, JobPair, Solver, Benchmark geben?
+\item
+  Wuerde Pagination auf den Seiten helfen? Wieviele Zeilen sollte pro
+  Seite angezeigt werden?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    10
+  \item
+    20
+  \item
+    50
+  \end{itemize}
+\item
+  Sollte es eine zusammenfassende Tabelle zu einem Job geben? Was sollte
+  diese beinhalten?
+\item
+  Sollte es mehr Informationen zu einem Benchmark geben?
+\item
+  Sollte es einen Vergleich von
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Benchmarks
+  \item
+    Solvern (+ Config)
+  \item
+    Termination-Competition geben?
+  \end{itemize}
+\item
+  Wenn ja, unter welchen Kriterien sollten diese verglichen werden?
+\item
+  Sollten die Resultate zu einem Job exportierbar sein?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Wenn ja welches Format wird bevorzugt? CSV, XML, JSON, andere?
+  \end{itemize}
+\end{itemize}
+
+\newpage
+
+\section{\texorpdfstring{Anforderungen an die Arbeit:
+Interview-Antworten
+\label{Anhang_Interview_Antworten}}{Anforderungen an die Arbeit: Interview-Antworten }}\label{anforderungen-an-die-arbeit-interview-antworten}
+
+\textbf{Nutzung SEP}
+
+\begin{itemize}
+\tightlist
+\item
+  Betrachtung Competition-Ergebnisse
+\item
+  Analyse der einzelnen Competition-Kategorien
+\item
+  Beobachtung der Tool-Entwicklung
+\item
+  Identifikation von YES/NO-Konflikten (gut gelöst)
+\item
+  Regression: Vergleich mit anderen Versionen des Tools
+\item
+  Vergleich mit anderen Tools
+\end{itemize}
+
+\textbf{Benutzte Routen}
+
+\begin{itemize}
+\tightlist
+\item
+  Competition-Übersicht
+\item
+  Flexible Table für drill down in Kombinationen
+\item
+  Competition-Ergebnis, Job-Resultate, Flexible Table nicht
+\end{itemize}
+
+\textbf{Gesuchte Information auf SEP}
+
+\begin{itemize}
+\tightlist
+\item
+  Benchmarks, bei denen sich das eigene Tool von Anderen unterscheidet
+\item
+  Ort von Flexible Table
+\item
+  Übersichtstabellen (Job-Result?)
+\item
+  Suche nach unterschiedlichem Result (YES, MAYBE) von versch.
+  Solver-Versionen
+\item
+  Wieviele der Benchmarks werden vom eigenen Solver geschafft. YES/(Anz.
+  Benchmarks)
+\end{itemize}
+
+\textbf{Eigenschaften Flexible-Table Query-Interface}
+
+\begin{itemize}
+\tightlist
+\item
+  nicht bekannt, dass man eigene Queries absenden kann
+
+  \begin{itemize}
+  \tightlist
+  \item
+    (fehlende Dokumenation für die Features der Seite)
+  \end{itemize}
+\item
+  vorhandene Funktionalität ist gut
+\item
+  ``solver-yes'' sollte eher nur ``yes'' heißen
+\item
+  In langen Tabellen wuerden Zwischenueberschriften / `mit-laufende
+  tabellen header' sehr helfen (s.u. 2.Link)
+\item
+  Nutzungsmöglichkeiten unbekannt
+\item
+  Fetchen der Informationen verwirrt, Nutzer weiß nicht, das man nur
+  Warten muss
+\end{itemize}
+
+\textbf{gewünschte Features}
+
+\begin{itemize}
+\tightlist
+\item
+  Inhalt des Benchmarks
+\item
+  C-Programm? XML? (s.u. 1.Link)
+\item
+  direkte Darstellung von Prover-Inputs (fuer text-only formate) wäre
+  schoen
+\item
+  komplette Ausgabe des Tools (Solvers?)
+\item
+  weitere Eigenschaften (Größe, Anzahl der Zeilen) eines Benchmarks
+\item
+  Sortierung nach Benchmark-Eigenschaften
+\item
+  Summe der Laufzeit pro Solver für die Benchmarks, die von allen
+  Solvern gelöst wurden
+\item
+  ein ``Show examples with \textbar{}tool1.runtime -
+  tool2.runtime\textbar{} \textgreater{} k''-Feature
+\item
+  Übersichtstabellen mit Durchschnittszeiten
+\item
+  Plots: Scatterplots, Cactusplots, \ldots{} (z.B. Scatterplot in den
+  man reinzoomen kann, und wo die Punkte ein mouseover haben, das
+  Details anzeigt)
+\item
+  Übersicht proofs
+\item
+  Übersicht selbst abgefeuerte Queries/interessante Resultatmengen
+\item
+  Übersichtlichkeit und intuitive Bedienbarkeit von (s.u. 3.Link) war
+  gut
+\end{itemize}
+
+\textbf{Navigationsleiste}
+
+\begin{itemize}
+\tightlist
+\item
+  keine Präferenz
+\item
+  2x ja
+\end{itemize}
+
+\textbf{Sortierung für Tabellenspalten}
+
+\begin{itemize}
+\tightlist
+\item
+  3x ja
+\end{itemize}
+
+\textbf{Filter für Tabellen}
+
+\begin{itemize}
+\tightlist
+\item
+  3x ja
+\end{itemize}
+
+\textbf{Suche für Job, JobPair, Solver, Benchmark}
+
+\begin{itemize}
+\tightlist
+\item
+  keine Notwendigkeit
+\item
+  nein
+\end{itemize}
+
+\textbf{Pagination}
+
+\begin{itemize}
+\tightlist
+\item
+  2x nein
+\item
+  keine bzw. default alle Ergebnisse anzeigen
+\end{itemize}
+
+\textbf{Zusammenfassende Tabelle pro Job}
+
+\begin{itemize}
+\tightlist
+\item
+  Anzahl (von was?)
+\item
+  Count YES/NO/MAYBE/ERROR
+\item
+  2x avg. time for YES/NO/MAYBE/ERROR (s.u. 3.Link)
+\item
+  à la (s.u. 3.Link)
+\end{itemize}
+
+\textbf{Zusätzliche Informationen zu einem Benchmark}
+
+\begin{itemize}
+\tightlist
+\item
+  Dateigröße und/oder Anzahl Zeilen
+\end{itemize}
+
+\textbf{Vergleich von Benchmarks/Solver/Competition}
+
+\begin{itemize}
+\tightlist
+\item
+  ja
+\item
+  Vergleichskriterien: Anzahl gelöste Benchmarks
+\item
+  nein, ja, ja
+\end{itemize}
+
+\textbf{Export für Star-Exec-Presenter}
+
+\begin{itemize}
+\tightlist
+\item
+  StarExec CSV-Export ausreichend
+\item
+  CSV-Export gewünscht
+\end{itemize}
+
+\textbf{Links}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \url{http://sv-comp.sosy-lab.org/2016/results/results-verified/Termination.table.html}
+\item
+  \url{http://stackoverflow.com/questions/17584702/how-to-add-a-scrollbar-to-an-html5-table}
+\item
+  \url{http://termcomp.uibk.ac.at/termcomp/competition/categoryResults.seam?cat=10235&comp=15991&cid=368094}
+\item
+  \url{http://cl-informatik.uibk.ac.at/software/tct/experiments/tct2/RaML/index.php#details}
+\end{enumerate}
+
+\newpage
+
+\section{\texorpdfstring{Auswertung: Einzelmesswerte Begriffsverband
+\label{appendix:tab:measurement-detail}}{Auswertung: Einzelmesswerte Begriffsverband }}\label{auswertung-einzelmesswerte-begriffsverband}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccccccc}
+\hline
+JobID & Messwert 1 & Messwert 2 & Messwert 3 & Messwert 4 & Messwert 5 & $\varnothing$-Zeit in Sekunden \\ \hline
+9515  & 0,09 & 0,07 & 0,08 & 0,06 & 0,09 & 0,08            \\
+10299  & 1,01 & 1,06 & 1,04 & 1,03 & 1,06 & 1,04            \\
+10257  & 16,66 & 17,31 & 17,33 & 17,25 & 16,70 & 17,05       \\\hline
+\end{tabular}
+\caption{Einzel-Messwerte für die Jobs 9515, 10299 und 10257 (alle Messwerte inklusive $\varnothing$-Zeit in Sekunden)}
+\label{tab:measurement-detail}
+\end{table}
+
+\section{\texorpdfstring{Auswertung: Code-Metriken Star-Exec-Presenter
+\label{appendix:tab:code}}{Auswertung: Code-Metriken Star-Exec-Presenter }}\label{auswertung-code-metriken-star-exec-presenter}
+
+\begin{lstlisting}
+Total number of files: 169
+Total number of lines: 12,367
+Total number of commits: 712
++--------------------------+-------+---------+-------+--------------------+
+| name                     | loc   | commits | files | distribution       |
++--------------------------+-------+---------+-------+--------------------+
+| Stefan von der Krone     | 5,872 | 212     | 108   | 47.5 / 29.8 / 63.9 |
+| Johannes Waldmann        | 4,078 | 260     | 93    | 33.0 / 36.5 / 55.0 |
+| René Muhl                | 1,467 | 182     | 67    | 11.9 / 25.6 / 39.6 |
+| stefanvonderkrone@gmx.de | 777   | 17      | 27    | 6.3 / 2.4 / 16.0   |
+| rm--                     | 113   | 33      | 8     | 0.9 / 4.6 / 4.7    |
+| vagrant                  | 60    | 7       | 3     | 0.5 / 1.0 / 1.8    |
+| stefanvonderkrone        | 0     | 1       | 0     | 0.0 / 0.1 / 0.0    |
++--------------------------+-------+---------+-------+--------------------+
+\end{lstlisting}
+

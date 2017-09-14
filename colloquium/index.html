@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <!--call to print as pdf: index.html?print-pdf#/ -->
+  <head>
+    <meta charset="utf-8">
+
+    <title>Masterverteidigung</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section data-menu-title="Thema">
+          <h2>Erweiterung einer Haskell Web-Applikation um Analyse und Visualisierung mit <br>Formaler Begriffsanalyse</h2>
+          <p>
+            <small>René Muhl | Betreuer: Prof. Waldmann <br>
+              MA 7.1.-4.8.16 | MP im SS 15</small>
+          </p>
+        </section>
+
+        <section data-menu-title="Motivation:SEP-Termcomp2015">
+          <h2>Star-Exec-Presenter</h2>
+          <img class="stretch" src="img/sep_termcomp2015.png"></img>
+          <a href="http://nfa.imn.htwk-leipzig.de/termcomp-devel/competitions/4"><small>(http://nfa.imn.htwk-leipzig.de/termcomp-devel/competitions/4)</small></a>
+        </section>
+
+        <section data-menu-title="Motivation:SEP-Job10257">
+          <h2>Star-Exec-Presenter</h2>
+          <img class="stretch" src="img/sep_job10257.png"></img>
+          <a href="http://nfa.imn.htwk-leipzig.de/termcomp-devel/results/standard/noquery/10257"><small>(http://nfa.imn.htwk-leipzig.de/termcomp-devel/results/standard/noquery/10257)</small></a>
+        </section>
+
+        <section data-menu-title="Motivation:TermComp">
+          <h2>Termination Competition</h2>
+          <p>
+            <ul>
+              <li>Solver prüfen Benchmarks auf Termination</li>
+              <li>Solver-Antwort: u.a. YES, MAYBE, NO</li>
+              <li>Berechnung auf <a href="https://www.starexec.org/">StarExec</a></li>
+              <li>seit 2014 an der HTWK Leipzig</li>
+              <li>Visualisierung durch <a href="http://termcomp.imn.htwk-leipzig.de/">Star-Exec-Presenter</a></li>
+            </ul>
+          </p>
+        </section>
+
+        <section data-menu-title="Motitvation:SEP-Overview" data-markdown>
+          ##Star-Exec-Presenter
+            * Präsentation der Resultate von Terminationswettbewerben
+            * Implementation durch Prof. Waldmann und Masterarbeit von Stefan von der Krone
+            * Yesod (Haskell Web-Framework)
+        </section>
+
+        <section data-markdown>
+          ##Problematik
+            * Menge an Daten führt zu Unübersichtlichkeit
+              * größte Kategorie TRS Standard: 7 Solver, 1498 Benchmarks, 10486 Zellen
+              * jährliche Competitions
+              * Starten von eigenen Competitions (zur Entwicklung)
+            * aufwendige, manuelle Analyse der Resultate notwendig
+            * Welche Benchmarks hat mein Solver nicht gelöst?
+        </section>
+
+        <section data-markdown>
+          ##Anforderungen
+            1. Einschränkung der Datenmenge durch Filter
+            2. mehr Übersichtlichkeit, besserer Zugang zu Informationen
+            3. eine verbesserte Navigation (z.B.: durch ein Menü)
+        </section>
+
+        <section data-menu-title="FCA:Allgemein" data-markdown>
+          ## Formale Begriffsanalyse
+            * von Rudolf Wille aus Ordnungstheorie definiert
+            * Data-Mining-Methode, zur Bestimmung von Klassen (Gegenstände mit gemeinsamen Merkmalen)
+            * Begriff kennzeichnet einen Gegenstand durch seine Merkmale
+        </section>
+
+        <section data-menu-title="FCA:Formaler Kontext: Def+Bsp">
+          <h2>Formaler Kontext</h2>
+          $(G,M,R)$ ist <strong>formaler Kontext</strong>, mit: <br>
+          $G$ Menge der Gegenstände, $M$ Menge der Merkmale, Relation $R \subseteq G \times M$ <br>
+          <img class="stretch" src="img/fca_context.png"></img> <br>
+          $G= \{1,2,3,4,5\}$, $M= \{even,odd,prime,square\}$,
+          $R= \{(1,odd),(1,square),(2,even),(2,prime),(3,odd), \\ (3,prime),(4,even),(4,square),(5,odd), (5,prime)\}$
+        </section>
+
+        <section data-menu-title="FCA:Formaler Kontext: Impl">
+          <h2>Formaler Kontext</h2>
+          <pre><code class="haskell" data-trim style="font-size: 18px;">
+data Context ob at = Context
+{ fore :: Map ob (Set at)
+, back :: Map at (Set ob)
+} deriving (Show)
+          </code></pre>
+            <pre><code class="haskell" data-trim style="font-size: 18px;">
+-- get all objects of given context
+objects :: (Ord at, Ord ob) => Context ob at -> Set ob
+objects c = Map.keysSet $ fore c
+          </code></pre>
+            <pre><code class="haskell" data-trim style="font-size: 18px;">
+-- get all attributes of given context
+attributes :: (Ord at, Ord ob) => Context ob at -> Set at
+attributes c = Map.keysSet $ back c
+          </code></pre>
+        </section>
+
+        <section data-menu-title="FCA:Projektionen">
+          <h2>Projektionen</h2>
+gemeinsame Merkmale der Gegenstände $A \subseteq G$: <br> $A' := \{ m \in M ~ | ~ \forall g \in A : (g,m) \in R \}$ <br>
+Gegenstände, die alle Merkmale $B \subseteq M$ besitzen: <br> $B' := \{g \in G ~ | ~ \forall m \in B : (g,m) \in R \}$
+<br>
+<img class="stretch" src="img/fca_context.png"></img> <br>
+          <ul>
+            <li>$A'= \{1\}' = \{odd,square\}$</li>
+            <li>$B' = \{odd,square\}' = \{1\}$</li>
+          </ul>
+        </section>
+
+        <section data-menu-title="FCA:Formaler Begriff: Def+Bsp">
+          <h2>Formaler Begriff</h2>
+          $(A,B)$ ist <strong>formaler Begriff</strong> des Kontextes $(G,M,R)$ mit:
+          <ul>
+            <li>$A \subseteq G$ und $B \subseteq M$</li>
+            <li>$A' = B$ und $A = B'$(Projektionen)</li>
+          </ul>
+          <pre><code class="haskell" data-trim style="font-size: 18px;">
+data Concept ob at = Concept
+{ obs :: Set ob
+, ats :: Set at
+} deriving (Show, Eq)
+          </code></pre>
+        </section>
+
+        <section data-menu-title="FCA:Begriffsbestimmung">
+            <h2>Begriffsbestimmung</h2>
+          <ol>
+            <li>$A \subseteq G$ wählen</li>
+            <li>$A'$ (gemeinsame Merkmale) und $A''$ (Gegenstände mit allen Merkmalen) bestimmen</li>
+            <li>wenn $A''$ = $A$, neuer Begriff $(A,A')$</li>
+          </ol>
+          <pre><code class="haskell" data-trim style="font-size: 18px;">
+-- determine all concepts of given context
+concepts :: (Ord at, Ord ob) => Context ob at -> [Concept ob at]
+concepts c = do
+  ats <- map Set.fromList $ subsequences $ Set.toList $ attributes c
+  guard $ ats == getAttributes c (getObjects c ats)
+  return (Concept (getObjects c ats) ats)
+          </code></pre>
+        </section>
+
+        <section data-menu-title="FCA:pos. Beispiel Formaler Begriff">
+          <h2>Formaler Begriff</h2>
+          <img class="stretch" src="img/fca_context.png"></img>
+          <ol>
+            <li>$A = \{1\} \subseteq G$</li>
+            <li>$A'= \{odd,square\}$ -> $A''= \{odd,square\}' = \{1\}$</li>
+            <li>da $A = A''$ -> neuer Begriff: $(A, A') = (\{1\}, \{odd, square\})$</li>
+          </ol>
+        </section>
+
+        <section data-menu-title="FCA:neg. Beispiel Formaler Begriff">
+          <h2>Formaler Begriff</h2>
+          <img class="stretch" src="img/fca_context.png"></img>
+          <ol>
+            <li>$A= \{3\} \subseteq G$</li>
+            <li>$A'= \{odd,prime\}$ -> $A''= \{odd,prime\}'= \{3,5\}$</li>
+            <li>da $A \neq A''$ -> kein neuer Begriff</li>
+          </ol>
+        </section>
+
+        <section data-menu-title="FCA-Anwendung">
+          <h2>Anwendung Formale Begriffsanalyse</h2>
+          <pre><code class="haskell" data-trim style="font-size: 18px;">
+data Attribute =
+  ASolverBasename !Text
+   | AJobResultInfoSolver !Text
+   | AYearSpecificSolverName !Text
+   | AJobResultInfoConfiguration !Text
+   | ASlowCpuTime !Bool
+   | ASolverResult !SolverResult
+   | ABenchmarkNumberRules !(Maybe Bool)
+   | ABenchmarkLeftLinear !(Maybe Bool)
+  deriving (Eq, Ord, Show)
+          </code></pre>
+
+          <pre><code class="haskell" data-trim style="font-size: 18px;">
+data Concept JobPairID Attribute = Concept
+  { obs :: Set JobPairID
+  , ats :: Set Attribute
+  } deriving (Show, Eq)
+</code></pre>
+        </section>
+
+        <section data-menu-title="FCA-Anwendung">
+          <h2>Anwendung Formale Begriffsanalyse</h2>
+          <img class="stretch" src="img/FCA_SEP.png"></img>
+          <ul>
+            <li> <span style="background-color: #80FFB0">({118913109}, {TTT2,YES,CPU time >10s})</span></li>
+            <li> <span style="background-color: #FFFF99">({118913108, 118913114},{AProVE 2015,MAYBE,CPU time >10s})</span></li>
+        </ul>
+        </section>
+
+        <section data-menu-title="Ergebnisse">
+          <h2>Ergebnisse</h2>
+            <p align="left"><a href="http://termcomp.imn.htwk-leipzig.de/concepts/0/Ids%20%5B%5D/10257?_hasdata=&SolverNames=1&SolverNames=2&SolverNames=3&CPUTimes=1&NumberRules=2&LeftLinears=3">neue Route</a> mit:</p>
+            <ul>
+              <li>Formular zur Einschränkung des Formalen Kontextes (1.)</li>
+              <li>Darstellung aller Begriffe durch Hasse-Diagramm (2.)</li>
+              <li>Hasse-Diagramm-Interaktion durch Teilmenge, Komplement und Zoom (1.)</li>
+              <li>Benchmark-Merkmale <i>Anzahl Regeln, links-linear</i> als weitere Filter-Optionen (zusätzlich) </li>
+              <li>rudimentäres Menü (3.)</li>
+            </ul>
+        </section>
+
+        <section data-menu-title="Zusammenfassung">
+          <h2>Zusammenfassung</h2>
+          <p align="left">Formale Begriffsanalyse:</p>
+          <ul>
+            <li>eignet sich zur Analyse von Resultat-Daten</li>
+            <li>ist hilfreich zur Navigation durch Daten </li>
+            <li>macht interessante Begriffe sichtbar</li>
+            <li>ist eingeschränkt</li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: false,
+        progress: true,
+        history: true,
+        center: true,
+        loop: true,
+        theme: 'simple',
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+
+
+        // mathjax config
+        math: {
+          mathjax: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js',
+          config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+        },
+        // revealjs-menu config
+        menu: {
+          // Specifies which side of the presentation the menu will
+          // be shown. Use 'left' or 'right'.
+          side: 'left',
+
+          // Add slide numbers to the titles in the slide list.
+          // Use 'true' or format string (same as reveal.js slide numbers)
+          numbers: 'true',
+
+          // Specifies which slide elements will be used for generating
+          // the slide titles in the menu. The default selects the first
+          // heading element found in the slide, but you can specify any
+          // valid css selector and the text from the first matching
+          // element will be used.
+          // Note: that a section data-menu-title attribute or an element
+          // with a menu-title class will take precedence over this option
+          titleSelector: 'h1, h2, h3, h4, h5, h6',
+
+          // Hide slides from the menu that do not have a title.
+          // Set to 'true' to only list slides with titles.
+          hideMissingTitles: false,
+
+          // Add markers to the slide titles to indicate the
+          // progress through the presentation
+          markers: false,
+
+          // Specify custom panels to be included in the menu, by
+          // providing an array of objects with 'title', 'icon'
+          // properties, and either a 'src' or 'content' property.
+          custom: false,
+
+          // Specifies the themes that will be available in the themes
+          // menu panel. Set to 'false' to hide themes panel.
+          themes: [
+            { name: 'Simple', theme: 'css/theme/simple.css' },
+            { name: 'White', theme: 'css/theme/white.css' },
+            { name: 'Black', theme: 'css/theme/black.css' },
+            { name: 'League', theme: 'css/theme/league.css' },
+            { name: 'Sky', theme: 'css/theme/sky.css' },
+            { name: 'Beige', theme: 'css/theme/beige.css' },
+            { name: 'Serif', theme: 'css/theme/serif.css' },
+            { name: 'Blood', theme: 'css/theme/blood.css' },
+            { name: 'Night', theme: 'css/theme/night.css' },
+            { name: 'Moon', theme: 'css/theme/moon.css' },
+            { name: 'Solarized', theme: 'css/theme/solarized.css' }
+          ],
+
+          // Specifies if the transitions menu panel will be shown.
+          transitions: false,
+
+          // Adds a menu button to the slides to open the menu panel.
+          // Set to 'false' to hide the button.
+          openButton: true,
+
+          // If 'true' allows the slide number in the presentation to
+          // open the menu panel. The reveal.js slideNumber option must
+          // be displayed for this to take effect
+          openSlideNumber: false,
+
+          // If true allows the user to open and navigate the menu using
+          // the keyboard. Standard keyboard interaction with reveal
+          // will be disabled while the menu is open.
+          keyboard: false
+        },
+
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/math/math.js', async: true },
+          { src: 'plugin/menu/menu.js' }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>

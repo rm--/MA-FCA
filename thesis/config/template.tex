@@ -1,0 +1,313 @@
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+
+% Template based on https://github.com/jgm/pandoc-templates/blob/master/default.latex
+
+\usepackage[ngerman]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage[babelshorthands=true]{german}
+\usepackage[threshold=1]{csquotes}
+
+\usepackage[toc]{appendix}
+%\renewcommand\chaptername{Anhang}
+$if(fontfamily)$
+  \usepackage{$fontfamily$}
+$else$
+  \usepackage{lmodern}
+$endif$
+
+$if(spacing)$
+  \usepackage[$spacing$]{setspace}
+$endif$
+
+\usepackage{amssymb,amsmath}
+\usepackage{pifont}
+
+\usepackage{amsthm} %theorems
+\newtheorem{newdef}{Definition}[section]
+\newtheorem{satz}{Satz}[section]
+
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Quelltext}
+
+\usepackage{multirow} %tables
+\usepackage{url}
+
+
+\usepackage{float}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{multicol} %text side by side
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{tikz,mdframed}
+
+\newcounter{bsp}[section]
+\renewcommand{\thebsp}{\thesection.\arabic{bsp}}
+
+\mdfsetup{skipabove=\topskip,skipbelow=\topskip}
+\newenvironment{bsp}[1][]{%
+\refstepcounter{bsp}
+    \ifstrempty{#1}%
+    {\mdfsetup{%
+        frametitle={%
+            \tikz[baseline=(current bounding box.east),outer sep=0pt]
+            \node[anchor=east,rectangle,draw=gray, fill=white, line width=1pt]
+            {\strut Beispiel};}}%
+    }%
+    {\mdfsetup{%
+        frametitle={%
+            \tikz[baseline=(current bounding box.east),outer sep=0pt]
+            \node[anchor=west,rectangle,draw=gray, fill=white, line width=1pt]
+            {\strut Beispiel\space\thebsp\space#1};}}%
+    }%
+    \mdfsetup{innertopmargin=10pt,linecolor=gray,%
+            linewidth=1pt,topline=true,
+            frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+    \begin{mdframed}[]\relax%
+    }{\end{mdframed}}
+
+
+% colors
+\definecolor{yes}{HTML}{80FFB0}
+\definecolor{maybe}{HTML}{FFFF99}
+
+% Tables
+\usepackage{longtable,booktabs}
+
+%\usepackage{graphics} % for scalebox, zoom tables
+
+% Fixed using pandoc on OSX
+% https://github.com/jgm/pandoc/pull/1571#issuecomment-106298268
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\usepackage{graphicx}
+% Redefine \includegraphics so that, unless explicit options are
+% given, the image width will not exceed the width or the height of the page.
+% Images get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\ScaleWidthIfNeeded{%
+ \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\def\ScaleHeightIfNeeded{%
+  \ifdim\Gin@nat@height>0.9\textheight
+    0.9\textheight
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\setkeys{Gin}{width=\ScaleWidthIfNeeded,height=\ScaleHeightIfNeeded,keepaspectratio}%
+
+% Margins of chapter heading
+$if(chapterheadstartvskip)$
+  \renewcommand*{\chapterheadstartvskip}{\vspace*{$chapterheadstartvskip$}}
+$endif$
+$if(chapterheadendvskip)$
+  \renewcommand*{\chapterheadendvskip}{\vspace{$chapterheadendvskip$}}
+$endif$
+
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+
+% Package to set page headers and footers
+$if(scrlayer-scrpage)$
+  \usepackage[automark,headsepline]{scrlayer-scrpage}
+  $for(scrlayer-scrpage)$
+    $scrlayer-scrpage$
+  $endfor$
+$endif$
+
+$if(euro)$
+  \usepackage{eurosym}
+$endif$
+
+$if(mainfont)$
+  \setmainfont{$mainfont$}
+$endif$
+
+$if(sansfont)$
+  \setsansfont{$sansfont$}
+$endif$
+
+$if(monofont)$
+  \setmonofont[Mapping=tex-ansi]{$monofont$}
+$endif$
+
+$if(mathfont)$
+  \setmathfont(Digits,Latin,Greek){$mathfont$}
+$endif$
+
+$if(geometry)$
+  \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$endif$
+
+$if(natbib)$
+  \usepackage{natbib}
+  \bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
+$endif$
+
+$if(biblatex)$
+  \usepackage[backend=biber,style=$if(biblio-style)$$biblio-style$$else$alphabetic$endif$]{biblatex}
+  $if(biblio-files)$
+    \addbibresource{$biblio-files$}
+  $endif$
+$endif$
+
+$if(highlighting-macros)$
+  $highlighting-macros$
+$endif$
+
+$if(verbatim-in-note)$
+  \usepackage{fancyvrb}
+  \VerbatimFootnotes
+$endif$
+
+
+\usepackage[unicode,pdfencoding=auto]{hyperref}
+
+\hypersetup{breaklinks=true,
+            pdfauthor={$author-meta$},
+            pdftitle={$title-meta$},
+            colorlinks=false,
+            linkbordercolor=green,
+            citebordercolor=green,
+            urlbordercolor=blue,
+            pdfborder={0 1 1},
+            pdfborderstyle={/S/U/W 1},
+}
+
+\urlstyle{same}  % don't use monospace font for urls
+
+$if(links-as-notes)$
+  % Make links footnotes instead of hotlinks:
+  \renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+
+
+\usepackage[toc]{glossaries}
+\makeglossaries
+%Glossar-Einstellungen
+\input{content/glossary/glossary}
+
+$if(strikeout)$
+  \usepackage[normalem]{ulem}
+  % avoid problems with \sout in headers with hyperref:
+  \pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+$endif$
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
+$if(numbersections)$
+  \setcounter{secnumdepth}{5}
+$else$
+  \setcounter{secnumdepth}{0}
+$endif$
+
+$if(verbatim-in-note)$
+  \VerbatimFootnotes % allows verbatim text in footnotes
+$endif$
+
+$for(header-includes)$
+  $header-includes$
+$endfor$
+
+
+% some own useful command
+
+\newcommand{\todo}[1]
+{\textbf{TODO:} \textit{#1}}
+
+
+%Ausschluss von Schusterjungen
+\clubpenalty = 10000
+%Ausschluss von Hurenkindern
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+
+\begin{document}
+
+\frontmatter
+
+$for(include-before)$
+  \input{$include-before$}
+$endfor$
+
+\clearpage
+
+$if(toc)$
+  \hypersetup{linkcolor=black}
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}} % do not show subsection in toc
+  \setcounter{tocdepth}{$toc-depth$}
+  \newgeometry{left=3cm,right=2.5cm, top=1.5cm, bottom=3cm}
+    \tableofcontents
+    \pagestyle{plain}
+    \restoregeometry
+    \cleardoublepage
+$endif$
+
+
+$if(scrlayer-scrpage)$
+  $for(scrlayer-scrpage)$
+    $scrlayer-scrpage$
+  $endfor$
+$endif$
+
+\mainmatter
+
+$body$
+
+$for(include-chapters)$
+  \input($include-chapters$)
+$endfor$
+
+\setglossarystyle{list}
+\printglossary[title=Glossar,nonumberlist]
+
+
+$if(biblatex)$
+  \printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+$endif$
+
+\backmatter
+
+$if(lot)$
+  \newgeometry{left=3cm,right=2.5cm, top=1.5cm, bottom=3cm}
+    \listoftables
+  \restoregeometry
+  \clearpage
+$endif$
+
+$if(lof)$
+  \newgeometry{left=3cm,right=2.5cm, top=1.5cm, bottom=3cm}
+    \listoffigures
+  \restoregeometry
+  \clearpage
+$endif$
+
+
+$for(include-after)$
+  \input{$include-after$}
+$endfor$
+
+\begin{appendix}
+\input{content/include/APPENDIX.tex}
+\end{appendix}
+\input{content/include/eigenstaendigkeitserklaerung.tex}
+
+\end{document}
